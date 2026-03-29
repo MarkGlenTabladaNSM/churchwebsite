@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { DollarSign, History } from 'lucide-react';
+import { DollarSign, History, Download } from 'lucide-react';
 import { api } from '../api/axios';
 
 export default function TreasurerDashboard() {
@@ -10,6 +10,8 @@ export default function TreasurerDashboard() {
   const [amount, setAmount] = useState('');
   const [description, setDescription] = useState('');
   const [type, setType] = useState('income');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
   useEffect(() => {
     if (user?.role === 'treasurer' || user?.role === 'admin') {
@@ -43,6 +45,28 @@ export default function TreasurerDashboard() {
         console.error("Failed to add transaction", err);
         alert("Failed to add transaction");
     }
+  };
+
+  const filteredTransactions = transactions.filter(t => {
+    if (startDate && t.date < startDate) return false;
+    if (endDate && t.date > endDate) return false;
+    return true;
+  });
+
+  const exportToCSV = () => {
+    let csvContent = "data:text/csv;charset=utf-8,";
+    csvContent += "Date,Description,Type,Amount\n";
+    filteredTransactions.forEach(t => {
+      const amount = t.type === 'income' ? t.amount : `-${t.amount}`;
+      csvContent += `${t.date},"${t.description}",${t.type},${amount}\n`;
+    });
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `transaction_history.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -95,9 +119,35 @@ export default function TreasurerDashboard() {
 
         <div className="lg:col-span-2">
           <div className="bg-white rounded-xl shadow-sm border overflow-hidden">
-            <div className="px-6 py-4 border-b bg-gray-50 flex items-center">
-              <History className="h-5 w-5 mr-2 text-gray-500" />
-              <h2 className="text-lg font-semibold text-gray-800">Transaction History</h2>
+            <div className="px-6 py-4 border-b bg-gray-50 flex flex-col lg:flex-row items-center justify-between gap-4">
+              <div className="flex items-center self-start lg:self-auto">
+                <History className="h-5 w-5 mr-2 text-gray-500" />
+                <h2 className="text-lg font-semibold text-gray-800">Transaction History</h2>
+              </div>
+              <div className="flex flex-wrap items-center gap-2 w-full lg:w-auto">
+                <input 
+                  type="date" 
+                  value={startDate} 
+                  onChange={(e) => setStartDate(e.target.value)}
+                  className="border border-gray-300 rounded-md p-1.5 text-sm flex-1 lg:flex-none max-w-[140px]"
+                  title="Start Date"
+                />
+                <span className="text-gray-500 text-sm">to</span>
+                <input 
+                  type="date" 
+                  value={endDate} 
+                  onChange={(e) => setEndDate(e.target.value)}
+                  className="border border-gray-300 rounded-md p-1.5 text-sm flex-1 lg:flex-none max-w-[140px]"
+                  title="End Date"
+                />
+                <button 
+                  onClick={exportToCSV}
+                  className="bg-green-600 hover:bg-green-700 text-white p-1.5 px-4 rounded-md text-sm font-semibold flex items-center justify-center gap-2 transition flex-1 lg:flex-none shadow-sm"
+                >
+                  <Download size={16} />
+                  Export CSV
+                </button>
+              </div>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-left">
@@ -110,7 +160,7 @@ export default function TreasurerDashboard() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
-                  {transactions.map(t => (
+                  {filteredTransactions.map(t => (
                     <tr key={t.id} className="hover:bg-gray-50">
                       <td className="px-6 py-4 text-sm text-gray-500">{t.date}</td>
                       <td className="px-6 py-4 text-sm font-medium text-gray-900">{t.description}</td>
@@ -124,8 +174,8 @@ export default function TreasurerDashboard() {
                       </td>
                     </tr>
                   ))}
-                  {transactions.length === 0 && (
-                     <tr><td colSpan="4" className="px-6 py-8 text-center text-gray-500">No transactions recorded yet.</td></tr>
+                  {filteredTransactions.length === 0 && (
+                     <tr><td colSpan="4" className="px-6 py-8 text-center text-gray-500">No transactions found.</td></tr>
                   )}
                 </tbody>
               </table>
