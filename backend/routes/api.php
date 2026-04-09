@@ -8,12 +8,14 @@ use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SystemLogController;
+use App\Http\Controllers\ProjectPlanController;
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 
 Route::get('/events', [EventController::class, 'index']);
 Route::get('/announcements', [AnnouncementController::class, 'index']);
+Route::get('/project-plans', [ProjectPlanController::class, 'index']);
 
 // Protected routes
 Route::middleware('token.auth')->group(function () {
@@ -40,5 +42,11 @@ Route::middleware('token.auth')->group(function () {
         Route::get('/transactions', [TransactionController::class, 'index']);
         Route::post('/transactions', [TransactionController::class, 'store']);
         Route::get('/transactions/balance', [TransactionController::class, 'balance']);
+    });
+
+    // Treasurer only routes
+    Route::middleware('role:treasurer')->group(function () {
+        Route::post('/project-plans', [ProjectPlanController::class, 'store']);
+        Route::put('/project-plans/{id}/add-amount', [ProjectPlanController::class, 'addAmount']);
     });
 });

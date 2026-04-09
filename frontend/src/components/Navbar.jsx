@@ -12,6 +12,7 @@ export default function Navbar() {
     { name: 'Home', path: '/' },
     { name: 'Events', path: '/events' },
     { name: 'Announcements', path: '/announcements' },
+    { name: 'Projects', path: '/project-plans' },
   ];
 
   const handleLogout = () => {
