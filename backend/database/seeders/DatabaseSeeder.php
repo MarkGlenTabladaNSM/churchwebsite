@@ -32,6 +32,15 @@ class DatabaseSeeder extends Seeder
             'api_token' => Str::random(60),
         ]);
 
+        // Pastor user
+        User::create([
+            'name' => 'Pastor User',
+            'email' => 'pastor@church.com',
+            'password' => Hash::make('pastor123'),
+            'role' => 'pastor',
+            'api_token' => Str::random(60),
+        ]);
+
         // Member user
         User::create([
             'name' => 'Member User',

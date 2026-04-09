@@ -46,6 +46,9 @@ export default function Navbar() {
                 {user.role === 'treasurer' && (
                   <Link to="/treasurer" className="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium">Treasurer Dashboard</Link>
                 )}
+                {user.role === 'pastor' && (
+                  <Link to="/pastor" className="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium">Pastor Dashboard</Link>
+                )}
                 
                 <div className="flex items-center gap-2 text-sm font-medium text-gray-700 bg-gray-100 py-1.5 px-3 rounded-full">
                   <UserIcon size={16} /> <span>{user.name}</span>
@@ -82,6 +85,7 @@ export default function Navbar() {
               <>
                 {user.role === 'admin' && <Link to="/admin" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50" onClick={() => setIsOpen(false)}>Admin Dashboard</Link>}
                 {user.role === 'treasurer' && <Link to="/treasurer" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50" onClick={() => setIsOpen(false)}>Treasurer Dashboard</Link>}
+                {user.role === 'pastor' && <Link to="/pastor" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50" onClick={() => setIsOpen(false)}>Pastor Dashboard</Link>}
                 <button onClick={() => { handleLogout(); setIsOpen(false); }} className="w-full text-left block px-3 py-2 text-base font-medium text-red-600 hover:bg-gray-50 flex items-center gap-2">
                   <LogOut size={16} /> Logout
                 </button>

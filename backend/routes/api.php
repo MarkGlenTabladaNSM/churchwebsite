@@ -27,7 +27,10 @@ Route::middleware('token.auth')->group(function () {
         Route::get('/users', [UserController::class, 'index']);
         Route::put('/users/{user}', [UserController::class, 'updateRole']);
         Route::get('/logs', [SystemLogController::class, 'index']);
-        
+    });
+    
+    // Admin & Pastor routes
+    Route::middleware('role:admin,pastor')->group(function () {
         Route::post('/events', [EventController::class, 'store']);
         Route::put('/events/{event}', [EventController::class, 'update']);
         Route::delete('/events/{event}', [EventController::class, 'destroy']);
@@ -37,11 +40,15 @@ Route::middleware('token.auth')->group(function () {
         Route::delete('/announcements/{announcement}', [AnnouncementController::class, 'destroy']);
     });
     
-    // Treasurer & Admin routes
-    Route::group(['middleware' => ['role:admin,treasurer']], function () {
+    // Transaction Read Access (Admin, Treasurer, Pastor)
+    Route::group(['middleware' => ['role:admin,treasurer,pastor']], function () {
         Route::get('/transactions', [TransactionController::class, 'index']);
-        Route::post('/transactions', [TransactionController::class, 'store']);
         Route::get('/transactions/balance', [TransactionController::class, 'balance']);
+    });
+
+    // Treasurer & Admin routes (Write)
+    Route::group(['middleware' => ['role:admin,treasurer']], function () {
+        Route::post('/transactions', [TransactionController::class, 'store']);
     });
 
     // Treasurer only routes

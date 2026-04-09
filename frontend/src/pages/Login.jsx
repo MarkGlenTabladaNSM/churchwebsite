@@ -21,8 +21,10 @@ export default function Login() {
           <h2 className="mt-6 text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
           <p className="mt-2 text-sm text-gray-600">
             For testing Admin, use: <span className="font-semibold text-blue-600">admin@church.com</span> (Pwd: admin123)
-            <br/>
+            <br />
             For testing Treasurer, use: <span className="font-semibold text-blue-600">treasurer@church.com</span> (Pwd: treasurer123)
+            <br />
+            For testing Pastor, use: <span className="font-semibold text-blue-600">pastor@church.com</span> (Pwd: pastor123)
           </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
