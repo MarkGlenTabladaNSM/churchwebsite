@@ -51,8 +51,8 @@ Route::middleware('token.auth')->group(function () {
         Route::post('/transactions', [TransactionController::class, 'store']);
     });
 
-    // Treasurer only routes
-    Route::middleware('role:treasurer')->group(function () {
+    // Project Plans management routes
+    Route::middleware('role:treasurer,admin,pastor')->group(function () {
         Route::post('/project-plans', [ProjectPlanController::class, 'store']);
         Route::put('/project-plans/{id}/add-amount', [ProjectPlanController::class, 'addAmount']);
     });

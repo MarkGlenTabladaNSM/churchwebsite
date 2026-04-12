@@ -51,14 +51,14 @@ export default function ProjectPlans() {
      }
   };
 
-  // Only treasurers can create plans and add amounts
-  const isTreasurer = user?.role === 'treasurer';
+  // Users who can manage plans
+  const canManagePlans = user?.role === 'treasurer' || user?.role === 'admin' || user?.role === 'pastor';
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
       <h1 className="text-4xl font-bold mb-10 text-center">Church Project Plans</h1>
       
-      {isTreasurer && (
+      {canManagePlans && (
          <div className="mb-12 bg-white p-6 rounded-xl border shadow-sm">
            <h2 className="text-xl font-bold mb-4">Create New Project Plan</h2>
            <form onSubmit={handleCreate} className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -89,10 +89,10 @@ export default function ProjectPlans() {
                  <div className="w-full bg-gray-200 rounded-full h-4">
                     <div className="bg-blue-600 h-4 rounded-full transition-all duration-500" style={{ width: `${percent}%` }}></div>
                  </div>
-                 <div className="text-right text-xs mt-1 text-gray-500">{percent}% Achieved</div>
+              <div className="text-right text-xs mt-1 text-gray-500">{percent}% Achieved</div>
               </div>
 
-              {isTreasurer && (
+              {canManagePlans && (
                  <form onSubmit={(e) => handleAddAmount(e, p.id)} className="mt-4 flex gap-2">
                     <input 
                       type="number" 
