@@ -1,16 +1,43 @@
 import { useState, useEffect } from 'react';
-import { Calendar, Heart } from 'lucide-react';
+import { Calendar, Heart, ChevronLeft, ChevronRight } from 'lucide-react';
 import { api } from '../api/axios';
 import { Link } from 'react-router-dom';
 
 export default function Home() {
   const [events, setEvents] = useState([]);
   const [announcements, setAnnouncements] = useState([]);
+  
+  // Slideshow state
+  const [currentGallerySlide, setCurrentGallerySlide] = useState(0);
+
+  const galleryImages = [
+    "https://images.unsplash.com/photo-1437604473264-b6a9c7b4f5aa?auto=format&fit=crop&w=1200&q=80", // Worship hands
+    "https://images.unsplash.com/photo-1544427920-c49ccf08c146?auto=format&fit=crop&w=1200&q=80", // Group gathering
+    "https://images.unsplash.com/photo-1543616991-87a229a4ae48?auto=format&fit=crop&w=1200&q=80", // People studying bible
+    "https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?auto=format&fit=crop&w=1200&q=80"  // Celebration/Event
+  ];
 
   useEffect(() => {
      api.get('/events').then(res => setEvents(res.data.slice(0, 4))).catch(console.error);
      api.get('/announcements').then(res => setAnnouncements(res.data.slice(0, 3))).catch(console.error);
   }, []);
+
+  // Auto-advance slideshow
+  useEffect(() => {
+     const timer = setInterval(() => {
+        setCurrentGallerySlide((prev) => (prev + 1) % galleryImages.length);
+     }, 5000);
+     return () => clearInterval(timer);
+  }, [galleryImages.length]);
+
+  const prevSlide = () => {
+      setCurrentGallerySlide((prev) => (prev === 0 ? galleryImages.length - 1 : prev - 1));
+  };
+
+  const nextSlide = () => {
+      setCurrentGallerySlide((prev) => (prev + 1) % galleryImages.length);
+  };
+
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -98,6 +125,54 @@ export default function Home() {
             </div>
 
           </div>
+        </div>
+      </section>
+
+      {/* Picture Slide Show / Gallery Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+           <h2 className="text-3xl font-bold text-center mb-4">Life at Grace Church</h2>
+           <p className="text-center text-gray-500 mb-12 max-w-2xl mx-auto">Take a glimpse into our community, our worship, and the beautiful moments we share together.</p>
+           
+           <div className="relative w-full max-w-5xl mx-auto h-96 md:h-[500px] rounded-2xl overflow-hidden shadow-xl group bg-gray-200">
+             {/* Slider Images */}
+             {galleryImages.map((img, idx) => (
+                <img
+                  key={idx}
+                  src={img}
+                  alt={`Grace Church Life ${idx + 1}`}
+                  className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${idx === currentGallerySlide ? 'opacity-100' : 'opacity-0'}`}
+                />
+             ))}
+             
+             {/* Slider Indicators */}
+             <div className="absolute inset-x-0 bottom-0 pb-6 flex justify-center gap-3">
+                {galleryImages.map((_, idx) => (
+                   <button 
+                     key={idx} 
+                     onClick={() => setCurrentGallerySlide(idx)}
+                     className={`w-3 h-3 rounded-full transition-all duration-300 ${idx === currentGallerySlide ? 'bg-blue-600 scale-125' : 'bg-white/70 hover:bg-white saturate-0 focus:outline-none'}`}
+                     aria-label={`Go to image ${idx + 1}`}
+                   ></button>
+                ))}
+             </div>
+             
+             {/* Prev/Next Navigation Controls */}
+             <button 
+                onClick={prevSlide}
+                className="absolute left-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/30 text-white backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all hover:bg-black/60 focus:outline-none focus:opacity-100"
+                aria-label="Previous image"
+             >
+                <ChevronLeft size={28} />
+             </button>
+             <button 
+                onClick={nextSlide}
+                className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/30 text-white backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all hover:bg-black/60 focus:outline-none focus:opacity-100"
+                aria-label="Next image"
+             >
+                <ChevronRight size={28} />
+             </button>
+           </div>
         </div>
       </section>
 
