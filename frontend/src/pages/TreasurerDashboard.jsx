@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { DollarSign, History, Download } from 'lucide-react';
+import { DollarSign, History, Download, Activity } from 'lucide-react';
 import { api } from '../api/axios';
 
 export default function TreasurerDashboard() {
@@ -73,14 +73,20 @@ export default function TreasurerDashboard() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <h1 className="text-3xl font-bold text-gray-900 mb-8">Treasurer Dashboard</h1>
 
-      <div className="bg-white p-8 rounded-xl shadow-sm border text-center mb-10">
-        <p className="text-gray-500 font-medium tracking-wide">TOTAL AVAILABLE BALANCE</p>
-        <p className={`text-5xl font-extrabold mt-3 ${balance.balance >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-          ${Number(balance.balance).toFixed(2)}
-        </p>
-        <div className="mt-4 flex justify-center gap-8 text-sm text-gray-500 border-t pt-4">
-           <div>Total Income: <strong className="text-green-600">${Number(balance.income).toFixed(2)}</strong></div>
-           <div>Total Expenses: <strong className="text-red-600">${Number(balance.expenses).toFixed(2)}</strong></div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col justify-center">
+           <div className="flex items-center gap-3 text-gray-500 font-medium mb-2"><DollarSign size={20}/> Available Balance</div>
+           <div className={`text-3xl font-bold ${balance.balance >= 0 ? 'text-green-600' : 'text-red-500'}`}>
+              ${parseFloat(balance.balance || 0).toLocaleString()}
+           </div>
+        </div>
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col justify-center">
+           <div className="flex items-center gap-3 text-gray-500 font-medium mb-2"><Activity size={20} className="text-green-500"/> Total Income</div>
+           <div className="text-3xl font-bold text-green-600">${parseFloat(balance.income || 0).toLocaleString()}</div>
+        </div>
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col justify-center">
+           <div className="flex items-center gap-3 text-gray-500 font-medium mb-2"><Activity size={20} className="text-red-500"/> Total Expenses</div>
+           <div className="text-3xl font-bold text-red-500">${parseFloat(balance.expenses || 0).toLocaleString()}</div>
         </div>
       </div>
 

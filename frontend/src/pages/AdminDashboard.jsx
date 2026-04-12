@@ -7,11 +7,13 @@ export default function AdminDashboard() {
   const { user } = useAuth();
   const [users, setUsers] = useState([]);
   const [logs, setLogs] = useState([]);
+  const [balanceData, setBalanceData] = useState({ income: 0, expenses: 0, balance: 0});
   
   useEffect(() => {
     if (user?.role === 'admin') {
       api.get('/users').then(res => setUsers(res.data)).catch(console.error);
       api.get('/logs').then(res => setLogs(res.data)).catch(console.error);
+      api.get('/transactions/balance').then(res => setBalanceData(res.data)).catch(console.error);
     }
   }, [user]);
 
@@ -39,6 +41,23 @@ export default function AdminDashboard() {
       <h1 className="text-3xl font-bold text-gray-900 mb-8">Admin Dashboard</h1>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col justify-center">
+           <div className="flex items-center gap-3 text-gray-500 font-medium mb-2"><DollarSign size={20}/> Available Balance</div>
+           <div className={`text-3xl font-bold ${balanceData.balance >= 0 ? 'text-green-600' : 'text-red-500'}`}>
+              ${parseFloat(balanceData.balance || 0).toLocaleString()}
+           </div>
+        </div>
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col justify-center">
+           <div className="flex items-center gap-3 text-gray-500 font-medium mb-2"><Activity size={20} className="text-green-500"/> Total Income</div>
+           <div className="text-3xl font-bold text-green-600">${parseFloat(balanceData.income || 0).toLocaleString()}</div>
+        </div>
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col justify-center">
+           <div className="flex items-center gap-3 text-gray-500 font-medium mb-2"><Activity size={20} className="text-red-500"/> Total Expenses</div>
+           <div className="text-3xl font-bold text-red-500">${parseFloat(balanceData.expenses || 0).toLocaleString()}</div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
         <div className="bg-white p-6 rounded-xl shadow-sm border flex items-center gap-4">
           <div className="bg-blue-100 p-3 rounded-full text-blue-600"><Users size={24} /></div>
           <div><p className="text-sm text-gray-500">Total Users</p><p className="text-2xl font-bold">{users.length}</p></div>
@@ -46,10 +65,6 @@ export default function AdminDashboard() {
         <div className="bg-white p-6 rounded-xl shadow-sm border flex items-center gap-4">
           <div className="bg-green-100 p-3 rounded-full text-green-600"><Activity size={24} /></div>
           <div><p className="text-sm text-gray-500">System Logs</p><p className="text-2xl font-bold">{logs.length}</p></div>
-        </div>
-        <div className="bg-white p-6 rounded-xl shadow-sm border flex items-center gap-4">
-          <div className="bg-purple-100 p-3 rounded-full text-purple-600"><DollarSign size={24} /></div>
-          <div><p className="text-sm text-gray-500">Finances</p><p className="text-xl font-bold text-gray-400">View Treasurer</p></div>
         </div>
       </div>
 
