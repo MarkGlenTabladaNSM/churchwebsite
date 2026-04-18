@@ -24,6 +24,12 @@ class User extends Authenticatable
         'password',
         'role',
         'api_token',
+        'bio',
+        'profile_photo',
+        'facebook_url',
+        'twitter_url',
+        'telegram_url',
+        'phone',
     ];
 
     /**

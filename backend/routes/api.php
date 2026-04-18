@@ -16,11 +16,13 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::get('/events', [EventController::class, 'index']);
 Route::get('/announcements', [AnnouncementController::class, 'index']);
 Route::get('/project-plans', [ProjectPlanController::class, 'index']);
+Route::get('/members', [UserController::class, 'directory']);
 
 // Protected routes
 Route::middleware('token.auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me', [AuthController::class, 'me']);
+    Route::put('/profile', [UserController::class, 'updateProfile']);
     
     // Admin routes
     Route::middleware('role:admin')->group(function () {

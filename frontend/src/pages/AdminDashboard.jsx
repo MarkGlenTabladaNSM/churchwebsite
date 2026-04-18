@@ -94,6 +94,7 @@ export default function AdminDashboard() {
                       className="text-sm border-gray-300 dark:border-gray-700 rounded-md shadow-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white border p-1 focus:ring-blue-500 focus:border-blue-500"
                     >
                       <option value="admin">Admin</option>
+                      <option value="pastor">Pastor</option>
                       <option value="treasurer">Treasurer</option>
                       <option value="member">Member</option>
                     </select>

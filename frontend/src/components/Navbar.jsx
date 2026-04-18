@@ -12,6 +12,7 @@ export default function Navbar() {
 
   const publicLinks = [
     { name: 'Home', path: '/' },
+    { name: 'Directory', path: '/directory' },
     { name: 'Events', path: '/events' },
     { name: 'Announcements', path: '/announcements' },
     { name: 'Projects', path: '/project-plans' },
@@ -60,9 +61,9 @@ export default function Navbar() {
                   <Link to="/pastor" className="text-gray-600 hover:text-blue-600 px-3 py-2 text-sm font-medium">Pastor Dashboard</Link>
                 )}
                 
-                <div className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 py-1.5 px-3 rounded-full">
+                <Link to="/profile" className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 py-1.5 px-3 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
                   <UserIcon size={16} /> <span>{user.name}</span>
-                </div>
+                </Link>
                 <button onClick={handleLogout} className="flex items-center text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 gap-1 text-sm font-medium">
                   <LogOut size={16} /> Logout
                 </button>
@@ -102,6 +103,9 @@ export default function Navbar() {
                 {link.name}
               </Link>
             ))}
+            {user && (
+              <Link to="/profile" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800" onClick={() => setIsOpen(false)}>My Profile</Link>
+            )}
             {user ? (
               <>
                 {user.role === 'admin' && <Link to="/admin" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800" onClick={() => setIsOpen(false)}>Admin Dashboard</Link>}
