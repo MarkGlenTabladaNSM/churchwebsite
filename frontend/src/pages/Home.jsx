@@ -129,12 +129,12 @@ export default function Home() {
       </section>
 
       {/* Picture Slide Show / Gallery Section */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-gray-50 dark:bg-gray-900/50 transition-colors duration-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-           <h2 className="text-3xl font-bold text-center mb-4">Life at Grace Church</h2>
-           <p className="text-center text-gray-500 mb-12 max-w-2xl mx-auto">Take a glimpse into our community, our worship, and the beautiful moments we share together.</p>
+           <h2 className="text-3xl font-bold text-center mb-4 dark:text-white">Life at Grace Church</h2>
+           <p className="text-center text-gray-500 dark:text-gray-400 mb-12 max-w-2xl mx-auto">Take a glimpse into our community, our worship, and the beautiful moments we share together.</p>
            
-           <div className="relative w-full max-w-5xl mx-auto h-96 md:h-[500px] rounded-2xl overflow-hidden shadow-xl group bg-gray-200">
+           <div className="relative w-full max-w-5xl mx-auto h-96 md:h-[500px] rounded-2xl overflow-hidden shadow-xl group bg-gray-200 dark:bg-gray-800">
              {/* Slider Images */}
              {galleryImages.map((img, idx) => (
                 <img
@@ -177,10 +177,10 @@ export default function Home() {
       </section>
 
       {/* Location / Map Section */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-white dark:bg-gray-950 transition-colors duration-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-           <h2 className="text-3xl font-bold text-center mb-12">Where to Find Us</h2>
-           <div className="h-96 w-full rounded-xl overflow-hidden shadow-md bg-gray-100">
+           <h2 className="text-3xl font-bold text-center mb-12 dark:text-white">Where to Find Us</h2>
+           <div className="h-96 w-full rounded-xl overflow-hidden shadow-md bg-gray-100 dark:bg-gray-800 border dark:border-gray-800">
              <iframe
                title="Church Location"
                width="100%"

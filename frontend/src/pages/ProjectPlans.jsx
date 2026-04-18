@@ -55,17 +55,17 @@ export default function ProjectPlans() {
   const canManagePlans = user?.role === 'treasurer' || user?.role === 'admin' || user?.role === 'pastor';
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-12">
-      <h1 className="text-4xl font-bold mb-10 text-center">Church Project Plans</h1>
+    <div className="max-w-7xl mx-auto px-4 py-12 transition-colors duration-200">
+      <h1 className="text-4xl font-bold mb-10 text-center dark:text-white">Church Project Plans</h1>
       
       {canManagePlans && (
-         <div className="mb-12 bg-white p-6 rounded-xl border shadow-sm">
-           <h2 className="text-xl font-bold mb-4">Create New Project Plan</h2>
+         <div className="mb-12 bg-white dark:bg-gray-900 p-6 rounded-xl border dark:border-gray-800 shadow-sm">
+           <h2 className="text-xl font-bold mb-4 dark:text-white">Create New Project Plan</h2>
            <form onSubmit={handleCreate} className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <input type="text" placeholder="Project Title" value={title} onChange={e=>setTitle(e.target.value)} required className="border p-2 rounded" />
-              <input type="number" placeholder="Target Amount" value={targetAmount} onChange={e=>setTargetAmount(e.target.value)} required min="1" className="border p-2 rounded" />
-              <textarea placeholder="Description" value={description} onChange={e=>setDescription(e.target.value)} required className="border p-2 rounded col-span-full md:col-span-1" />
-              <button type="submit" className="bg-blue-600 text-white p-2 rounded font-bold hover:bg-blue-700 col-span-full md:col-span-3">Create Project</button>
+              <input type="text" placeholder="Project Title" value={title} onChange={e=>setTitle(e.target.value)} required className="border dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:placeholder-gray-500 p-2 rounded focus:ring-blue-500 focus:border-blue-500" />
+              <input type="number" placeholder="Target Amount" value={targetAmount} onChange={e=>setTargetAmount(e.target.value)} required min="1" className="border dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:placeholder-gray-500 p-2 rounded focus:ring-blue-500 focus:border-blue-500" />
+              <textarea placeholder="Description" value={description} onChange={e=>setDescription(e.target.value)} required className="border dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:placeholder-gray-500 p-2 rounded col-span-full md:col-span-1 focus:ring-blue-500 focus:border-blue-500" />
+              <button type="submit" className="bg-blue-600 dark:bg-blue-700 text-white p-2 rounded font-bold hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors col-span-full md:col-span-3">Create Project</button>
            </form>
          </div>
       )}
@@ -77,19 +77,19 @@ export default function ProjectPlans() {
           const percent = target > 0 ? Math.min((current / target) * 100, 100).toFixed(2) : 0;
           
           return (
-            <div key={p.id} className="bg-white border rounded-xl overflow-hidden shadow-sm flex flex-col p-6">
-              <h3 className="text-2xl font-bold mb-2">{p.title}</h3>
-              <p className="text-gray-700 flex-1 mb-6">{p.description}</p>
+            <div key={p.id} className="bg-white dark:bg-gray-900 border dark:border-gray-800 rounded-xl overflow-hidden shadow-sm flex flex-col p-6 hover:shadow-md transition-shadow">
+              <h3 className="text-2xl font-bold mb-2 dark:text-white">{p.title}</h3>
+              <p className="text-gray-700 dark:text-gray-300 flex-1 mb-6">{p.description}</p>
               
               <div className="mb-4">
-                 <div className="flex justify-between text-sm mb-1 font-bold">
+                 <div className="flex justify-between text-sm mb-1 font-bold dark:text-gray-200">
                     <span>${current.toLocaleString()} Raised</span>
-                    <span className="text-gray-500">Target: ${target.toLocaleString()}</span>
+                    <span className="text-gray-500 dark:text-gray-400">Target: ${target.toLocaleString()}</span>
                  </div>
-                 <div className="w-full bg-gray-200 rounded-full h-4">
-                    <div className="bg-blue-600 h-4 rounded-full transition-all duration-500" style={{ width: `${percent}%` }}></div>
+                 <div className="w-full bg-gray-200 dark:bg-gray-800 rounded-full h-4">
+                    <div className="bg-blue-600 dark:bg-blue-500 h-4 rounded-full transition-all duration-500" style={{ width: `${percent}%` }}></div>
                  </div>
-              <div className="text-right text-xs mt-1 text-gray-500">{percent}% Achieved</div>
+              <div className="text-right text-xs mt-1 text-gray-500 dark:text-gray-400">{percent}% Achieved</div>
               </div>
 
               {canManagePlans && (
@@ -102,15 +102,15 @@ export default function ProjectPlans() {
                       required 
                       min="1" 
                       step="0.01"
-                      className="border p-2 rounded flex-1" 
+                      className="border dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:placeholder-gray-500 p-2 rounded flex-1 focus:ring-green-500 focus:border-green-500" 
                     />
-                    <button type="submit" className="bg-green-600 text-white p-2 rounded font-bold hover:bg-green-700">Add Funds</button>
+                    <button type="submit" className="bg-green-600 dark:bg-green-700 text-white p-2 rounded font-bold hover:bg-green-700 dark:hover:bg-green-600 transition-colors">Add Funds</button>
                  </form>
               )}
             </div>
           );
         })}
-        {plans.length === 0 && <p className="text-center w-full col-span-full py-10 text-gray-500">There are no project plans active.</p>}
+        {plans.length === 0 && <p className="text-center w-full col-span-full py-10 text-gray-500 dark:text-gray-400 font-medium">There are no project plans active.</p>}
       </div>
     </div>
   );

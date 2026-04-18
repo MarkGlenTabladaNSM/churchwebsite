@@ -14,37 +14,37 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950 py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
+      <div className="max-w-md w-full bg-white dark:bg-gray-900 rounded-xl shadow-lg p-8 border dark:border-gray-800">
         <div className="text-center">
-          <Church className="mx-auto h-12 w-12 text-blue-600" />
-          <h2 className="mt-6 text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
-          <p className="mt-2 text-sm text-gray-600">
-            For testing Admin, use: <span className="font-semibold text-blue-600">admin@church.com</span> (Pwd: admin123)
+          <Church className="mx-auto h-12 w-12 text-blue-600 dark:text-blue-400" />
+          <h2 className="mt-6 text-3xl font-extrabold text-gray-900 dark:text-white">Sign in to your account</h2>
+          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+            For testing Admin, use: <span className="font-semibold text-blue-600 dark:text-blue-400">admin@church.com</span> (Pwd: admin123)
             <br />
-            For testing Treasurer, use: <span className="font-semibold text-blue-600">treasurer@church.com</span> (Pwd: treasurer123)
+            For testing Treasurer, use: <span className="font-semibold text-blue-600 dark:text-blue-400">treasurer@church.com</span> (Pwd: treasurer123)
             <br />
-            For testing Pastor, use: <span className="font-semibold text-blue-600">pastor@church.com</span> (Pwd: pastor123)
+            For testing Pastor, use: <span className="font-semibold text-blue-600 dark:text-blue-400">pastor@church.com</span> (Pwd: pastor123)
           </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">Email address</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Email address</label>
               <input
                 type="email"
                 required
-                className="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:placeholder-gray-500 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Password</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
               <input
                 type="password"
                 required
-                className="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:placeholder-gray-500 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -61,9 +61,9 @@ export default function Login() {
           </div>
         </form>
         <div className="mt-6 text-center">
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-600 dark:text-gray-400">
             Don't have an account?{' '}
-            <Link to="/register" className="font-medium text-blue-600 hover:text-blue-500">
+            <Link to="/register" className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300">
               Register here
             </Link>
           </p>

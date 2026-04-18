@@ -6,5 +6,11 @@
     color: var(--color-gray-900);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    @apply transition-colors duration-200;
+  }
+
+  .dark body {
+    background-color: var(--color-gray-950);
+    color: var(--color-gray-100);
   }
 }
