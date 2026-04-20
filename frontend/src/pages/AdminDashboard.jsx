@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Users, Activity, DollarSign, Trash2 } from 'lucide-react';
+import { Users, Activity, DollarSign, Trash2, Edit, Plus, X } from 'lucide-react';
 import { api } from '../api/axios';
 
 export default function AdminDashboard() {
@@ -9,6 +9,13 @@ export default function AdminDashboard() {
   const [logs, setLogs] = useState([]);
   const [balanceData, setBalanceData] = useState({ income: 0, expenses: 0, balance: 0});
   
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMode, setModalMode] = useState('add');
+  const [currentUser, setCurrentUser] = useState(null);
+  const [formData, setFormData] = useState({
+    name: '', email: '', password: '', role: 'member', bio: '', profile_photo: '', facebook_url: '', twitter_url: '', telegram_url: '', phone: ''
+  });
+
   useEffect(() => {
     if (user?.role === 'admin') {
       api.get('/users').then(res => setUsers(res.data)).catch(console.error);
@@ -21,9 +28,51 @@ export default function AdminDashboard() {
     return <div className="p-8 justify-center flex text-red-600 font-bold">Access Denied: Admins Only</div>;
   }
 
-  const handleDelete = (id) => {
-     // Optional: implement user deletion
-     setUsers(users.filter(u => u.id !== id));
+  const handleOpenModal = (mode, userObj = null) => {
+    setModalMode(mode);
+    if (mode === 'edit' && userObj) {
+      setCurrentUser(userObj);
+      setFormData({
+        name: userObj.name || '', email: userObj.email || '', password: '', role: userObj.role || 'member',
+        bio: userObj.bio || '', profile_photo: userObj.profile_photo || '', 
+        facebook_url: userObj.facebook_url || '', twitter_url: userObj.twitter_url || '', 
+        telegram_url: userObj.telegram_url || '', phone: userObj.phone || ''
+      });
+    } else {
+      setCurrentUser(null);
+      setFormData({
+        name: '', email: '', password: '', role: 'member', bio: '', profile_photo: '', facebook_url: '', twitter_url: '', telegram_url: '', phone: ''
+      });
+    }
+    setIsModalOpen(true);
+  };
+
+  const handleModalSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (modalMode === 'add') {
+        const res = await api.post('/users', formData);
+        setUsers([...users, res.data]);
+      } else {
+        const res = await api.put(`/users/${currentUser.id}`, formData);
+        setUsers(users.map(u => u.id === currentUser.id ? res.data : u));
+      }
+      setIsModalOpen(false);
+    } catch (e) {
+      console.error(e);
+      alert("Failed to save user details");
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if(!window.confirm("Are you sure you want to delete this user?")) return;
+    try {
+      await api.delete(`/users/${id}`);
+      setUsers(users.filter(u => u.id !== id));
+    } catch (e) {
+      console.error(e);
+      alert("Failed to delete user");
+    }
   };
 
   const handleRoleChange = async (id, newRole) => {
@@ -69,7 +118,12 @@ export default function AdminDashboard() {
       </div>
 
       <div className="bg-white dark:bg-gray-900 rounded-xl shadow-sm border dark:border-gray-800 overflow-hidden mb-10">
-        <div className="px-6 py-4 border-b dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50"><h2 className="text-lg font-semibold text-gray-800 dark:text-white">User Management</h2></div>
+        <div className="px-6 py-4 border-b dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 flex justify-between items-center">
+          <h2 className="text-lg font-semibold text-gray-800 dark:text-white">User Management</h2>
+          <button onClick={() => handleOpenModal('add')} className="bg-blue-600 text-white px-3 py-1.5 rounded-md text-sm font-medium hover:bg-blue-700 flex items-center gap-1 transition">
+             <Plus size={16}/> Add Member
+          </button>
+        </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left">
             <thead className="bg-gray-50 dark:bg-gray-800/50 text-gray-500 dark:text-gray-400 text-xs uppercase font-medium">
@@ -77,7 +131,7 @@ export default function AdminDashboard() {
                 <th className="px-6 py-3">User</th>
                 <th className="px-6 py-3">Role</th>
                 <th className="px-6 py-3">Joined Date</th>
-                <th className="px-6 py-3">Actions</th>
+                <th className="px-6 py-3 text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
@@ -100,7 +154,10 @@ export default function AdminDashboard() {
                     </select>
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">{new Date(u.created_at).toLocaleDateString()}</td>
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-4 text-right">
+                     <button onClick={() => handleOpenModal('edit', u)} className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 p-1 rounded transition mr-2">
+                       <Edit size={18} />
+                     </button>
                      <button onClick={() => handleDelete(u.id)} className="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 p-1 rounded transition">
                        <Trash2 size={18} />
                      </button>
@@ -123,6 +180,79 @@ export default function AdminDashboard() {
            {logs.length === 0 && <li className="py-4 text-gray-500 dark:text-gray-400">No logs yet.</li>}
         </ul>
       </div>
+
+      {/* User Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white dark:bg-gray-900 rounded-xl shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center p-6 border-b border-gray-200 dark:border-gray-800">
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+                {modalMode === 'add' ? 'Add New Member' : 'Edit Member'}
+              </h2>
+              <button onClick={() => setIsModalOpen(false)} className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                <X size={24} />
+              </button>
+            </div>
+            <form onSubmit={handleModalSubmit} className="p-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name *</label>
+                  <input type="text" required value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} className="w-full border border-gray-300 dark:border-gray-700 rounded-lg p-2.5 bg-white dark:bg-gray-800 text-gray-900 dark:text-white" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email *</label>
+                  <input type="email" required value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} className="w-full border border-gray-300 dark:border-gray-700 rounded-lg p-2.5 bg-white dark:bg-gray-800 text-gray-900 dark:text-white" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{modalMode === 'add' ? 'Password *' : 'Password (leave blank to keep current)'}</label>
+                  <input type="password" required={modalMode === 'add'} value={formData.password} onChange={(e) => setFormData({...formData, password: e.target.value})} minLength={6} className="w-full border border-gray-300 dark:border-gray-700 rounded-lg p-2.5 bg-white dark:bg-gray-800 text-gray-900 dark:text-white" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Role *</label>
+                  <select value={formData.role} onChange={(e) => setFormData({...formData, role: e.target.value})} className="w-full border border-gray-300 dark:border-gray-700 rounded-lg p-2.5 bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
+                    <option value="admin">Admin</option>
+                    <option value="pastor">Pastor</option>
+                    <option value="treasurer">Treasurer</option>
+                    <option value="member">Member</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Phone</label>
+                  <input type="text" value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})} className="w-full border border-gray-300 dark:border-gray-700 rounded-lg p-2.5 bg-white dark:bg-gray-800 text-gray-900 dark:text-white" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Profile Photo URL</label>
+                  <input type="url" value={formData.profile_photo} onChange={(e) => setFormData({...formData, profile_photo: e.target.value})} className="w-full border border-gray-300 dark:border-gray-700 rounded-lg p-2.5 bg-white dark:bg-gray-800 text-gray-900 dark:text-white" />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Bio</label>
+                  <textarea value={formData.bio} onChange={(e) => setFormData({...formData, bio: e.target.value})} rows="3" className="w-full border border-gray-300 dark:border-gray-700 rounded-lg p-2.5 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"></textarea>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Facebook URL</label>
+                  <input type="url" value={formData.facebook_url} onChange={(e) => setFormData({...formData, facebook_url: e.target.value})} className="w-full border border-gray-300 dark:border-gray-700 rounded-lg p-2.5 bg-white dark:bg-gray-800 text-gray-900 dark:text-white" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Twitter URL</label>
+                  <input type="url" value={formData.twitter_url} onChange={(e) => setFormData({...formData, twitter_url: e.target.value})} className="w-full border border-gray-300 dark:border-gray-700 rounded-lg p-2.5 bg-white dark:bg-gray-800 text-gray-900 dark:text-white" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Telegram URL</label>
+                  <input type="url" value={formData.telegram_url} onChange={(e) => setFormData({...formData, telegram_url: e.target.value})} className="w-full border border-gray-300 dark:border-gray-700 rounded-lg p-2.5 bg-white dark:bg-gray-800 text-gray-900 dark:text-white" />
+                </div>
+              </div>
+              <div className="mt-6 flex justify-end gap-3">
+                <button type="button" onClick={() => setIsModalOpen(false)} className="px-4 py-2 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800">
+                  Cancel
+                </button>
+                <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                  {modalMode === 'add' ? 'Add Member' : 'Save Changes'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

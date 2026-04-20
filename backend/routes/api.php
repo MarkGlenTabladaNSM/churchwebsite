@@ -27,7 +27,9 @@ Route::middleware('token.auth')->group(function () {
     // Admin routes
     Route::middleware('role:admin')->group(function () {
         Route::get('/users', [UserController::class, 'index']);
-        Route::put('/users/{user}', [UserController::class, 'updateRole']);
+        Route::post('/users', [UserController::class, 'store']);
+        Route::put('/users/{user}', [UserController::class, 'update']);
+        Route::delete('/users/{user}', [UserController::class, 'destroy']);
         Route::get('/logs', [SystemLogController::class, 'index']);
     });
     

@@ -6,7 +6,6 @@ import Events from './pages/Events';
 import Announcements from './pages/Announcements';
 import ProjectPlans from './pages/ProjectPlans';
 import Login from './pages/Login';
-import Register from './pages/Register';
 import AdminDashboard from './pages/AdminDashboard';
 import TreasurerDashboard from './pages/TreasurerDashboard';
 import MemberDirectory from './pages/MemberDirectory';
@@ -26,7 +25,6 @@ function App() {
           <Route path="/directory" element={<MemberDirectory />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/treasurer" element={<TreasurerDashboard />} />
           <Route path="/pastor" element={<PastorDashboard />} />
