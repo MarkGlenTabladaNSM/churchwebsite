@@ -8,6 +8,7 @@ export default function AdminDashboard() {
   const [users, setUsers] = useState([]);
   const [logs, setLogs] = useState([]);
   const [balanceData, setBalanceData] = useState({ income: 0, expenses: 0, balance: 0});
+  const [showMembers, setShowMembers] = useState(false);
   
   useEffect(() => {
     if (user?.role === 'admin') {
@@ -35,6 +36,10 @@ export default function AdminDashboard() {
       alert("Failed to update role");
     }
   };
+
+  const filteredUsers = showMembers 
+    ? users 
+    : users.filter(u => u.role !== 'member');
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 transition-colors duration-200">
@@ -69,7 +74,18 @@ export default function AdminDashboard() {
       </div>
 
       <div className="bg-white dark:bg-gray-900 rounded-xl shadow-sm border dark:border-gray-800 overflow-hidden mb-10">
-        <div className="px-6 py-4 border-b dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50"><h2 className="text-lg font-semibold text-gray-800 dark:text-white">User Management</h2></div>
+        <div className="px-6 py-4 border-b dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 flex justify-between items-center">
+          <h2 className="text-lg font-semibold text-gray-800 dark:text-white">User Management</h2>
+          <label className="flex items-center gap-2 text-sm font-medium text-gray-600 dark:text-gray-400 cursor-pointer">
+            <input 
+              type="checkbox" 
+              checked={showMembers} 
+              onChange={(e) => setShowMembers(e.target.checked)} 
+              className="rounded border-gray-300 dark:border-gray-700 text-blue-600 focus:ring-blue-500"
+            />
+            Show Directory Members
+          </label>
+        </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left">
             <thead className="bg-gray-50 dark:bg-gray-800/50 text-gray-500 dark:text-gray-400 text-xs uppercase font-medium">
@@ -81,7 +97,7 @@ export default function AdminDashboard() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
-              {users.map(u => (
+              {filteredUsers.map(u => (
                 <tr key={u.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
                   <td className="px-6 py-4">
                     <div className="text-sm font-medium text-gray-900 dark:text-white">{u.name}</div>
