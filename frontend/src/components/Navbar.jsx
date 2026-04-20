@@ -71,6 +71,7 @@ export default function Navbar() {
             ) : (
               <div className="flex items-center gap-4">
                 <Link to="/login" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">Login</Link>
+                <Link to="/register" className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700 transition shadow-sm">Register</Link>
               </div>
             )}
           </div>
@@ -117,6 +118,7 @@ export default function Navbar() {
             ) : (
                <>
                  <Link to="/login" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800" onClick={() => setIsOpen(false)}>Login</Link>
+                 <Link to="/register" className="block px-3 py-2 rounded-md text-base font-medium text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30" onClick={() => setIsOpen(false)}>Register</Link>
                </>
             )}
           </div>

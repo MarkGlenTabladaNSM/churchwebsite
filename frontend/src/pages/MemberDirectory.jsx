@@ -1,11 +1,15 @@
 import { useState, useEffect } from 'react';
 import { api } from '../api/axios';
-import { Send, Phone, User as UserIcon, Mail } from 'lucide-react';
-import { FacebookIcon, TwitterIcon } from '../components/SocialIcons';
+import { useAuth } from '../context/AuthContext';
+import { Send, Phone, User as UserIcon, Mail, Plus } from 'lucide-react';
+import { FacebookIcon, TwitterIcon, InstagramIcon } from '../components/SocialIcons';
+import AddMemberModal from '../components/AddMemberModal';
 
 export default function MemberDirectory() {
+  const { user } = useAuth();
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   useEffect(() => {
     api.get('/members')
@@ -18,9 +22,19 @@ export default function MemberDirectory() {
     <div className="max-w-7xl mx-auto px-4 py-12 transition-colors duration-200">
       <div className="text-center mb-16">
         <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">Member Directory</h1>
-        <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+        <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-6">
           Meet our church community members. Connect with us through social media or reach out for fellowship.
         </p>
+        
+        {user?.role === 'admin' && (
+          <button 
+            onClick={() => setIsAddModalOpen(true)}
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-lg shadow-sm hover:bg-blue-700 transition font-medium"
+          >
+            <Plus size={20} />
+            Quick Add Member
+          </button>
+        )}
       </div>
 
       {loading ? (
@@ -70,6 +84,11 @@ export default function MemberDirectory() {
                         <Send size={20} className="rotate-[-20deg]" />
                       </a>
                     )}
+                    {member.instagram_url && (
+                      <a href={member.instagram_url} target="_blank" rel="noopener noreferrer" className="text-pink-600 hover:text-pink-700 dark:text-pink-400 transition-colors">
+                        <InstagramIcon size={20} />
+                      </a>
+                    )}
                   </div>
                   
                   {member.phone && (
@@ -90,6 +109,12 @@ export default function MemberDirectory() {
           <p className="text-gray-500 dark:text-gray-400">No members found in the directory.</p>
         </div>
       )}
+
+      <AddMemberModal 
+        isOpen={isAddModalOpen} 
+        onClose={() => setIsAddModalOpen(false)} 
+        onAdded={(newMember) => setMembers(prev => [...prev, newMember])}
+      />
     </div>
   );
 }

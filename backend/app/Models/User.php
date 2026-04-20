@@ -29,6 +29,7 @@ class User extends Authenticatable
         'facebook_url',
         'twitter_url',
         'telegram_url',
+        'instagram_url',
         'phone',
     ];
 

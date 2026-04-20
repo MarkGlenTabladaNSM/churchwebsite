@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../api/axios';
 import { User as UserIcon, Camera, Send, Phone, Save } from 'lucide-react';
-import { FacebookIcon, TwitterIcon } from '../components/SocialIcons';
+import { FacebookIcon, TwitterIcon, InstagramIcon } from '../components/SocialIcons';
 
 export default function Profile() {
   const { user, setUser } = useAuth();
@@ -13,6 +13,7 @@ export default function Profile() {
     facebook_url: '',
     twitter_url: '',
     telegram_url: '',
+    instagram_url: '',
     phone: '',
   });
   const [message, setMessage] = useState({ type: '', text: '' });
@@ -27,6 +28,7 @@ export default function Profile() {
         facebook_url: user.facebook_url || '',
         twitter_url: user.twitter_url || '',
         telegram_url: user.telegram_url || '',
+        instagram_url: user.instagram_url || '',
         phone: user.phone || '',
       });
     }
@@ -128,6 +130,10 @@ export default function Profile() {
                   <div className="flex items-center">
                      <span className="p-2.5 bg-blue-50 dark:bg-blue-900/20 border border-r-0 dark:border-gray-700 rounded-l-lg text-blue-500 dark:text-blue-400"><Send size={18} /></span>
                      <input type="url" name="telegram_url" value={formData.telegram_url} onChange={handleChange} className="w-full p-2.5 border dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded-r-lg focus:ring-2 focus:ring-blue-500" placeholder="Telegram URL" />
+                  </div>
+                  <div className="flex items-center">
+                     <span className="p-2.5 bg-pink-50 dark:bg-pink-900/20 border border-r-0 dark:border-gray-700 rounded-l-lg text-pink-600 dark:text-pink-400"><InstagramIcon size={18} /></span>
+                     <input type="url" name="instagram_url" value={formData.instagram_url} onChange={handleChange} className="w-full p-2.5 border dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded-r-lg focus:ring-2 focus:ring-blue-500" placeholder="Instagram URL" />
                   </div>
                 </div>
               </div>
