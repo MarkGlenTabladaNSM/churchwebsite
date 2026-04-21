@@ -16,6 +16,7 @@ export default function Navbar() {
     { name: 'Events', path: '/events' },
     { name: 'Announcements', path: '/announcements' },
     { name: 'Projects', path: '/project-plans' },
+    { name: 'Prayer Wall', path: '/prayer-wall' },
   ];
 
   const handleLogout = () => {

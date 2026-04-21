@@ -12,6 +12,7 @@ import TreasurerDashboard from './pages/TreasurerDashboard';
 import MemberDirectory from './pages/MemberDirectory';
 import Profile from './pages/Profile';
 import PastorDashboard from './pages/PastorDashboard';
+import PrayerWall from './pages/PrayerWall';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/announcements" element={<Announcements />} />
           <Route path="/project-plans" element={<ProjectPlans />} />
           <Route path="/directory" element={<MemberDirectory />} />
+          <Route path="/prayer-wall" element={<PrayerWall />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

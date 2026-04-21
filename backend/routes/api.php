@@ -9,6 +9,7 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SystemLogController;
 use App\Http\Controllers\ProjectPlanController;
+use App\Http\Controllers\PrayerRequestController;
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
@@ -18,8 +19,13 @@ Route::get('/announcements', [AnnouncementController::class, 'index']);
 Route::get('/project-plans', [ProjectPlanController::class, 'index']);
 Route::get('/members', [UserController::class, 'directory']);
 
+// Prayer Requests
+Route::get('/prayer-requests', [PrayerRequestController::class, 'index']);
+Route::post('/prayer-requests/{id}/pray', [PrayerRequestController::class, 'incrementPray']);
+
 // Protected routes
 Route::middleware('token.auth')->group(function () {
+    Route::post('/prayer-requests', [PrayerRequestController::class, 'store']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me', [AuthController::class, 'me']);
     Route::put('/profile', [UserController::class, 'updateProfile']);
