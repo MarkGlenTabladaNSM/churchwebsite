@@ -11,10 +11,10 @@ class PrayerRequestController extends Controller
 {
     public function index(Request $request)
     {
-        $user = $request->user('sanctum') ?? \Illuminate\Support\Facades\Auth::user(); 
+        $user = null;
         
         // Let's manually check for token if auth is not populated
-        if (!$user && $request->bearerToken()) {
+        if ($request->bearerToken()) {
             $user = \App\Models\User::where('api_token', $request->bearerToken())->first();
         }
 
@@ -46,17 +46,13 @@ class PrayerRequestController extends Controller
             'is_public' => 'boolean',
         ]);
 
-        $user = \Illuminate\Support\Facades\Auth::user();
-        if (!$user && $request->bearerToken()) {
+        $user = null;
+        if ($request->bearerToken()) {
             $user = \App\Models\User::where('api_token', $request->bearerToken())->first();
         }
 
-        if (!$user) {
-            return response()->json(['message' => 'Unauthorized'], 401);
-        }
-
         $prayerRequest = PrayerRequest::create([
-            'user_id' => $user->id,
+            'user_id' => $user ? $user->id : null,
             'content' => $request->content,
             'is_public' => $request->has('is_public') ? $request->is_public : true,
         ]);

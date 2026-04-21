@@ -21,11 +21,11 @@ Route::get('/members', [UserController::class, 'directory']);
 
 // Prayer Requests
 Route::get('/prayer-requests', [PrayerRequestController::class, 'index']);
+Route::post('/prayer-requests', [PrayerRequestController::class, 'store']);
 Route::post('/prayer-requests/{id}/pray', [PrayerRequestController::class, 'incrementPray']);
 
 // Protected routes
 Route::middleware('token.auth')->group(function () {
-    Route::post('/prayer-requests', [PrayerRequestController::class, 'store']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me', [AuthController::class, 'me']);
     Route::put('/profile', [UserController::class, 'updateProfile']);

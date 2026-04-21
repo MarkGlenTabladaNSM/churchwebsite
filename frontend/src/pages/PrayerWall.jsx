@@ -95,32 +95,32 @@ export default function PrayerWall() {
         </p>
       </div>
 
-      {user && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 mb-8">
-          <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">Share a Prayer Request</h2>
-          <form onSubmit={handleSubmit}>
-            <textarea
-              className="w-full rounded-lg border-gray-300 dark:border-gray-600 border dark:bg-gray-700 dark:text-white p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none transition-colors"
-              rows="3"
-              placeholder="What can we pray for?"
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              required
-            />
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between mt-4 gap-4">
-              <div className="flex items-center space-x-4">
-                <button
-                  type="button"
-                  onClick={() => setIsPublic(true)}
-                  className={`flex items-center space-x-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                    isPublic 
-                      ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300' 
-                      : 'text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400'
-                  }`}
-                >
-                  <Globe size={16} />
-                  <span>Public</span>
-                </button>
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 mb-8">
+        <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">Share a Prayer Request</h2>
+        <form onSubmit={handleSubmit}>
+          <textarea
+            className="w-full rounded-lg border-gray-300 dark:border-gray-600 border dark:bg-gray-700 dark:text-white p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none transition-colors"
+            rows="3"
+            placeholder="What can we pray for?"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            required
+          />
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between mt-4 gap-4">
+            <div className="flex items-center space-x-4">
+              <button
+                type="button"
+                onClick={() => setIsPublic(true)}
+                className={`flex items-center space-x-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                  isPublic 
+                    ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300' 
+                    : 'text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400'
+                }`}
+              >
+                <Globe size={16} />
+                <span>Public</span>
+              </button>
+              {user && (
                 <button
                   type="button"
                   onClick={() => setIsPublic(false)}
@@ -133,27 +133,19 @@ export default function PrayerWall() {
                   <Lock size={16} />
                   <span>Private (Pastors Only)</span>
                 </button>
-              </div>
-              <button
-                type="submit"
-                disabled={submitting || !content.trim()}
-                className="flex items-center justify-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <Send size={18} />
-                <span>{submitting ? 'Sharing...' : 'Share Prayer'}</span>
-              </button>
+              )}
             </div>
-          </form>
-        </div>
-      )}
-
-      {!user && (
-        <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-6 mb-8 text-center border border-blue-100 dark:border-blue-800">
-          <p className="text-blue-800 dark:text-blue-300">
-            Please log in to submit a prayer request. You can still pray for public requests below!
-          </p>
-        </div>
-      )}
+            <button
+              type="submit"
+              disabled={submitting || !content.trim()}
+              className="flex items-center justify-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <Send size={18} />
+              <span>{submitting ? 'Sharing...' : 'Share Prayer'}</span>
+            </button>
+          </div>
+        </form>
+      </div>
 
       {loading ? (
         <div className="flex justify-center items-center py-12">
