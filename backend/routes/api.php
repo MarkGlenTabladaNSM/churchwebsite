@@ -10,6 +10,12 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\SystemLogController;
 use App\Http\Controllers\ProjectPlanController;
 use App\Http\Controllers\PrayerRequestController;
+use App\Http\Controllers\SermonController;
+use App\Http\Controllers\MinistryController;
+use App\Http\Controllers\TestimonyController;
+
+
+
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
@@ -18,6 +24,14 @@ Route::get('/events', [EventController::class, 'index']);
 Route::get('/announcements', [AnnouncementController::class, 'index']);
 Route::get('/project-plans', [ProjectPlanController::class, 'index']);
 Route::get('/members', [UserController::class, 'directory']);
+Route::get('/sermons', [SermonController::class, 'index']);
+Route::get('/ministries', [MinistryController::class, 'index']);
+Route::get('/testimonies', [TestimonyController::class, 'index']);
+Route::post('/testimonies', [TestimonyController::class, 'store']);
+Route::post('/testimonies/{id}/amen', [TestimonyController::class, 'incrementAmen']);
+
+
+
 
 // Prayer Requests
 Route::get('/prayer-requests', [PrayerRequestController::class, 'index']);
@@ -47,7 +61,20 @@ Route::middleware('token.auth')->group(function () {
         Route::post('/announcements', [AnnouncementController::class, 'store']);
         Route::put('/announcements/{announcement}', [AnnouncementController::class, 'update']);
         Route::delete('/announcements/{announcement}', [AnnouncementController::class, 'destroy']);
+
+        Route::post('/sermons', [SermonController::class, 'store']);
+        Route::put('/sermons/{sermon}', [SermonController::class, 'update']);
+        Route::delete('/sermons/{sermon}', [SermonController::class, 'destroy']);
+
+        Route::post('/ministries', [MinistryController::class, 'store']);
+        Route::put('/ministries/{ministry}', [MinistryController::class, 'update']);
+        Route::delete('/ministries/{ministry}', [MinistryController::class, 'destroy']);
+
+        Route::delete('/testimonies/{testimony}', [TestimonyController::class, 'destroy']);
     });
+
+
+
     
     // Transaction Read Access (Admin, Treasurer, Pastor)
     Route::group(['middleware' => ['role:admin,treasurer,pastor']], function () {

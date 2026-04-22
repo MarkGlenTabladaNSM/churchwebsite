@@ -16,6 +16,9 @@ export default function Navbar() {
     { name: 'Events', path: '/events' },
     { name: 'Announcements', path: '/announcements' },
     { name: 'Projects', path: '/project-plans' },
+    { name: 'Sermons', path: '/sermons' },
+    { name: 'Ministries', path: '/ministries' },
+    { name: 'Testimonies', path: '/testimonies' },
     { name: 'Prayer Wall', path: '/prayer-wall' },
   ];
 

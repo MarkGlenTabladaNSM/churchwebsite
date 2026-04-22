@@ -13,6 +13,12 @@ import MemberDirectory from './pages/MemberDirectory';
 import Profile from './pages/Profile';
 import PastorDashboard from './pages/PastorDashboard';
 import PrayerWall from './pages/PrayerWall';
+import Sermons from './pages/Sermons';
+import Ministries from './pages/Ministries';
+import Testimonies from './pages/Testimonies';
+
+
+
 
 function App() {
   return (
@@ -26,7 +32,13 @@ function App() {
           <Route path="/project-plans" element={<ProjectPlans />} />
           <Route path="/directory" element={<MemberDirectory />} />
           <Route path="/prayer-wall" element={<PrayerWall />} />
+          <Route path="/sermons" element={<Sermons />} />
+          <Route path="/ministries" element={<Ministries />} />
+          <Route path="/testimonies" element={<Testimonies />} />
           <Route path="/profile" element={<Profile />} />
+
+
+
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/admin" element={<AdminDashboard />} />
