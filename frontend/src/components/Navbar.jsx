@@ -1,13 +1,13 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, Church, LogOut, User as UserIcon, Sun, Moon } from 'lucide-react';
+import { Menu, X, Church, LogOut, User as UserIcon } from 'lucide-react';
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { useTheme } from '../context/ThemeContext';
+
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { user, logout } = useAuth();
-  const { darkMode, toggleDarkMode } = useTheme();
+
   const navigate = useNavigate();
 
   const publicLinks = [
@@ -31,27 +31,21 @@ export default function Navbar() {
     <nav className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 shadow-sm sticky top-0 z-50 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
-          <div className="flex items-center">
+          <div className="flex items-center flex-shrink-0">
             <Link to="/" className="flex flex-shrink-0 items-center gap-2">
               <Church className="h-8 w-8 text-blue-600 dark:text-blue-400" />
               <span className="font-bold text-xl text-gray-900 dark:text-white">Grace Church</span>
             </Link>
           </div>
           
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden lg:flex items-center space-x-8">
             {publicLinks.map((link) => (
               <Link key={link.name} to={link.path} className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">
                 {link.name}
               </Link>
             ))}
 
-            <button 
-              onClick={toggleDarkMode}
-              className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-500 dark:text-gray-400 transition-colors"
-              aria-label="Toggle dark mode"
-            >
-              {darkMode ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
+
 
             {user ? (
               <div className="flex items-center gap-4 border-l pl-6 border-gray-200 dark:border-gray-700">
@@ -80,13 +74,8 @@ export default function Navbar() {
             )}
           </div>
           
-          <div className="flex items-center gap-2 md:hidden">
-            <button 
-              onClick={toggleDarkMode}
-              className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-500 dark:text-gray-400 transition-colors"
-            >
-              {darkMode ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
+          <div className="flex items-center gap-2 lg:hidden">
+
             <button onClick={() => setIsOpen(!isOpen)} className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white focus:outline-none">
               {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
@@ -95,7 +84,7 @@ export default function Navbar() {
       </div>
       
       {isOpen && (
-        <div className="md:hidden bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
+        <div className="lg:hidden bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {publicLinks.map((link) => (
               <Link 

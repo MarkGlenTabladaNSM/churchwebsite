@@ -11,10 +11,10 @@ export default function Home() {
   const [currentGallerySlide, setCurrentGallerySlide] = useState(0);
 
   const galleryImages = [
-    "https://images.unsplash.com/photo-1437604473264-b6a9c7b4f5aa?auto=format&fit=crop&w=1200&q=80", // Worship hands
-    "https://images.unsplash.com/photo-1544427920-c49ccf08c146?auto=format&fit=crop&w=1200&q=80", // Group gathering
-    "https://images.unsplash.com/photo-1543616991-87a229a4ae48?auto=format&fit=crop&w=1200&q=80", // People studying bible
-    "https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?auto=format&fit=crop&w=1200&q=80"  // Celebration/Event
+    "https://images.unsplash.com/photo-1518156677180-95a2893f3e9f?auto=format&fit=crop&w=1200&q=80", // Beautiful smiling children & community in the Philippines
+    "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=80", // Happy young Asian students / church youth gathering
+    "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=1200&q=80", // Group of Asian friends laughing and talking in fellowship
+    "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=1200&q=80"  // Breathtaking tropical beach sunset in Cebu, Philippines
   ];
 
   useEffect(() => {

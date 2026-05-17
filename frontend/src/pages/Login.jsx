@@ -19,13 +19,13 @@ export default function Login() {
         <div className="text-center">
           <Church className="mx-auto h-12 w-12 text-blue-600 dark:text-blue-400" />
           <h2 className="mt-6 text-3xl font-extrabold text-gray-900 dark:text-white">Sign in to your account</h2>
-          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+          {/* <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
             For testing Admin, use: <span className="font-semibold text-blue-600 dark:text-blue-400">admin@church.com</span> (Pwd: admin123)
             <br />
             For testing Treasurer, use: <span className="font-semibold text-blue-600 dark:text-blue-400">treasurer@church.com</span> (Pwd: treasurer123)
             <br />
             For testing Pastor, use: <span className="font-semibold text-blue-600 dark:text-blue-400">pastor@church.com</span> (Pwd: pastor123)
-          </p>
+          </p> */}
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
